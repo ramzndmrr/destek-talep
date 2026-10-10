@@ -1,0 +1,19 @@
+﻿# IntelliJ IDEA
+.idea/
+
+# Java / Maven
+target/
+**/target/
+*.class
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+
+# Logs and operating system
+*.log
+.DS_Store
+Thumbs.db

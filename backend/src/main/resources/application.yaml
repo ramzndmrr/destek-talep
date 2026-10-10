@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: h2
+  application:
+    name: destek-talep
+
+  datasource:
+    url: jdbc:h2:mem:destek_talep;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jwt:
+    issuer: destek_talep
+    audience: destek_talep
+    secret: "VGhpc0lzQVN0cm9uZ0pXVE1pbmltdW0zMkJ5dGVzU2VjcmV0S2V5"
+    access-token-expiration: 14400
+
+  google:
+    client-id: 1038251599947-3bp8jma4dfu1lk4om0iqmor4n0gklvug.apps.googleusercontent.com
+
+server:
+  port: 9090
+
+logging:
+  level:
+    org.springframework.security: TRACE
