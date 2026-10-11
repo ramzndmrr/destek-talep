@@ -61,11 +61,22 @@ destek-talep/
 │           └── resources/
 │               └── application.yaml
 ├── frontend/
+├── screenshot/
+│   └── maven.png
 ├── .gitignore
 └── README.md
 ```
 
-*Not: Yukarıdaki yapı, backend'deki temel sorumlulukları göstermek amacıyla sadeleştirilmiştir.*
+*Not: Proje yapısı, temel bileşenleri göstermek amacıyla sadeleştirilmiştir.*
+
+## Maven Yapılandırması
+<span style="color: red;">Eğer projeyi ilk açtığınızda hata alırsanız, IntelliJ IDEA içinden ekran görüntüsündeki ayarı yapıp Apply → OK diyerek sorunu çözebilirsiniz.</span>
+
+Backend projesinin Maven yapılandırması `pom.xml` dosyası üzerinden yönetilmektedir. Maven, bağımlılıkların yönetilmesini, projenin derlenmesini ve testlerin çalıştırılmasını sağlar.
+
+
+
+![Maven Yapılandırması](screenshot/maven.png)
 
 ## Kurulum ve Çalıştırma
 
@@ -104,13 +115,13 @@ mvn spring-boot:run
 
 Uygulama, yapılandırmada belirtilen port üzerinden çalışır. Varsayılan olarak `9090` portu kullanılmaktadır.
 
-H2 profilinin etkinleştirilmesi gerekiyorsa ve yapılandırmanız bu profili destekliyorsa uygulamayı şu şekilde başlatabilirsiniz:
+H2 profili etkinleştirilecek şekilde yapılandırılmışsa uygulamayı şu komutla başlatabilirsiniz:
 
 ```powershell
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=h2"
 ```
 
-H2 profilinin etkinleştirildiğini ve örnek kullanıcıları oluşturan başlangıç yapılandırmasının çalıştığını kontrol edin.
+H2 profilinin etkin olduğunu ve başlangıç verilerini oluşturan yapılandırmanın çalıştığını kontrol edin.
 
 ### 3. Frontend'i Çalıştırma
 
@@ -127,15 +138,15 @@ Frontend ortam değişkenlerinde backend API adresinin doğru yapılandırıldı
 NEXT_PUBLIC_API_URL=http://localhost:9090
 ```
 
-Projenin kullandığı ortam değişkeni farklı bir isimdeyse mevcut frontend yapılandırmasındaki değişken adını kullanın.
+Projenin kullandığı ortam değişkeni farklıysa mevcut yapılandırmadaki değişken adını kullanın.
 
-Ardından frontend'i başlatın:
+Frontend'i başlatın:
 
 ```bash
 npm run dev
 ```
 
-Web arayüzüne aşağıdaki adres üzerinden erişebilirsiniz:
+Web arayüzüne şu adres üzerinden erişebilirsiniz:
 
 http://localhost:3000
 
@@ -154,35 +165,35 @@ H2 profilindeki başlangıç verileri yapılandırması etkin olduğunda aşağ�
 
 ### Katmanların Sorumlulukları
 
-Proje, sorumlulukların birbirinden ayrılması ve kodun daha kolay bakım yapılabilmesi amacıyla katmanlı mimari yaklaşımıyla geliştirilmiştir.
+Proje, sorumlulukların birbirinden ayrılması ve kodun bakımının kolaylaştırılması amacıyla katmanlı mimari yaklaşımıyla geliştirilmiştir.
 
 **1. Controller Katmanı**
 
-HTTP isteklerini karşılar, gelen verileri ilgili servis katmanına iletir ve istemciye uygun HTTP yanıtlarını döndürür. Kimlik doğrulama ve destek talebi işlemlerine ait API uç noktaları bu katmanda tanımlanır.
+HTTP isteklerini karşılar, gelen verileri ilgili servis katmanına iletir ve istemciye uygun HTTP yanıtlarını döndürür.
 
 **2. Service Katmanı**
 
-Uygulamanın iş kurallarını ve temel işlem akışlarını yönetir. Kullanıcı kimlik doğrulama, destek talebi oluşturma ve taleplerin yönetilmesi gibi işlemler bu katmanda gerçekleştirilir.
+Uygulamanın iş kurallarını ve temel işlem akışlarını yönetir. Kullanıcı kimlik doğrulama ve destek talebi işlemleri bu katmanda gerçekleştirilir.
 
 **3. Repository Katmanı**
 
-Veritabanı işlemlerini yürütür. Spring Data JPA aracılığıyla kullanıcılar, destek talepleri ve refresh token kayıtları üzerinde veri erişimi sağlar.
+Veritabanı işlemlerini yürütür. Spring Data JPA aracılığıyla uygulamanın verilerine erişim sağlar.
 
 **4. Entity Katmanı**
 
-Veritabanında tutulan verilerin uygulamadaki nesne karşılıklarını tanımlar. Kullanıcı, destek talebi ve refresh token gibi temel veri modelleri bu katmanda bulunur.
+Veritabanında tutulan verilerin uygulamadaki nesne karşılıklarını tanımlar.
 
 **5. DTO Katmanı**
 
-İstemci ile backend arasındaki veri alışverişini düzenler. İstek ve yanıt modellerini birbirinden ayırarak API sözleşmesinin daha anlaşılır olmasını ve verilerin kontrollü biçimde aktarılmasını sağlar.
+İstemci ile backend arasındaki veri alışverişini düzenler. İstek ve yanıt modellerini birbirinden ayırarak verilerin kontrollü biçimde aktarılmasını sağlar.
 
 **6. Security ve Config Katmanları**
 
-Kimlik doğrulama, yetkilendirme, JWT yapılandırması, CORS ayarları ve uygulamanın diğer ortak yapılandırmalarını yönetir.
+Kimlik doğrulama, yetkilendirme, JWT yapılandırması, CORS ayarları ve uygulamanın ortak yapılandırmalarını yönetir.
 
 **7. Exception Katmanı**
 
-Uygulama genelinde oluşan hataları merkezi olarak ele alır. Farklı hata türlerini uygun HTTP durum kodları ve standart hata yanıtlarıyla istemciye iletir.
+Uygulama genelinde oluşan hataları merkezi olarak ele alır ve uygun HTTP durum kodlarıyla standart hata yanıtları oluşturur.
 
 **8. Frontend Katmanı**
 
@@ -226,7 +237,5 @@ Maven Wrapper kullanılıyorsa Windows üzerinde:
 ```
 
 ## Geliştirici
-
-**Ramazan Demir**
 
 GitHub: https://github.com/ramzndmrr
