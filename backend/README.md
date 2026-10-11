@@ -101,18 +101,6 @@ Backend dizinine geçin:
 cd backend
 ```
 
-Maven Wrapper dosyaları mevcutsa Windows üzerinde:
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-Wrapper dosyaları yoksa ve Maven kuruluysa:
-
-```bash
-mvn spring-boot:run
-```
-
 Uygulama, yapılandırmada belirtilen port üzerinden çalışır. Varsayılan olarak `9090` portu kullanılmaktadır.
 
 H2 profili etkinleştirilecek şekilde yapılandırılmışsa uygulamayı şu komutla başlatabilirsiniz:
